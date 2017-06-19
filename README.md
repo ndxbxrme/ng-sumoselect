@@ -1,5 +1,4 @@
 # ng-sumoselect
-===============
 
 An angular wrapper for [jquery.sumoselect](http://hemantnegi.github.io/jquery.sumoselect/)
 ------------------------------------------------------------------------------------------
