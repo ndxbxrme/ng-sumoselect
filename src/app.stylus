@@ -1,0 +1,7 @@
+.SumoSelect
+  li.opt
+    display none
+    &.ng-binding
+      display block
+    &.hidden
+      display none

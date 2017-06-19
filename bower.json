@@ -1,0 +1,24 @@
+{
+  "name": "ng-sumoselect",
+  "description": "An angular wrapper for SumoSelect",
+  "main": ["build/index.js", "build/app.css"],
+  "authors": [
+    "ndxbxrme"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ndxbxrme/ng-sumoselect",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "multiselect",
+    "dropdown"
+  ],
+  "dependencies": {
+    "sumoselect": "^3.0.2"
+  }
+}
