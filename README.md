@@ -21,7 +21,7 @@ angular.module('myApp', [
 ]);
 ```  
 
-Add the directive to any search element in your view  
+Add the directive to any select element in your view  
 ```jade
   select(sumoselect='{placeholder:"Select Me", search:true}', multiple='true', ng-model='selected')
     option(ng-repeat='d in data', value='{{d.id}}') {{d.name}}
