@@ -23,7 +23,7 @@ module.exports = (grunt) ->
     stylus:
       default:
         files:
-          "build/client/app.css": "src/client/**/*.stylus"
+          "build\/app.css": "src\/**\/*.stylus"
     clean:
       build: 'build'
     nodeunit:
