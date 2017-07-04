@@ -12,6 +12,7 @@ angular.module 'ng-sumoselect', []
   compile: (tElem, tAttrs) ->
     repeatAttr = null
     watch = null
+    watchDeref = null
     repeatOption = tElem.find 'option[ng-repeat], option[data-ng-repeat]'
     sumo = null
     if repeatOption.length
@@ -23,7 +24,7 @@ angular.module 'ng-sumoselect', []
         if sumo and controller and controller.$viewValue
           sumo.selectItem controller.$viewValue
       if watch
-        scope.$watch 'data', (n, o, scope) ->
+        watchDeref = scope.$watch watch, (n, o, scope) ->
           if angular.equals n, o
             return
           $timeout ->
@@ -51,6 +52,7 @@ angular.module 'ng-sumoselect', []
         value
       scope.$on '$destroy', ->
         sumo.unload()
+        watchDeref?()
       $timeout ->
         $(elem).SumoSelect opts
         sumo = $(elem)[0].sumo

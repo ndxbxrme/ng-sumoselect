@@ -11,9 +11,10 @@
       require: 'ngModel',
       priority: 1,
       compile: function(tElem, tAttrs) {
-        var repeatAttr, repeatOption, sumo, watch;
+        var repeatAttr, repeatOption, sumo, watch, watchDeref;
         repeatAttr = null;
         watch = null;
+        watchDeref = null;
         repeatOption = tElem.find('option[ng-repeat], option[data-ng-repeat]');
         sumo = null;
         if (repeatOption.length) {
@@ -29,7 +30,7 @@
             }
           };
           if (watch) {
-            scope.$watch('data', function(n, o, scope) {
+            watchDeref = scope.$watch(watch, function(n, o, scope) {
               if (angular.equals(n, o)) {
                 return;
               }
@@ -59,7 +60,8 @@
             return value;
           });
           scope.$on('$destroy', function() {
-            return sumo.unload();
+            sumo.unload();
+            return typeof watchDeref === "function" ? watchDeref() : void 0;
           });
           return $timeout(function() {
             $(elem).SumoSelect(opts);
