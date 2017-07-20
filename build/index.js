@@ -27,6 +27,8 @@
           render = function() {
             if (sumo && controller && controller.$viewValue) {
               return sumo.selectItem(controller.$viewValue);
+            } else {
+              return sumo.setText();
             }
           };
           if (watch) {
@@ -36,7 +38,7 @@
               }
               return $timeout(function() {
                 sumo.unload();
-                $(elem).SumoSelect(scope.sumoselect);
+                $(elem).SumoSelect(opts);
                 sumo = $(elem)[0].sumo;
                 if (sumo && controller && controller.$viewValue) {
                   sumo.selectItem(controller.$viewValue);

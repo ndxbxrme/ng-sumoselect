@@ -23,13 +23,15 @@ angular.module 'ng-sumoselect', []
       render = ->
         if sumo and controller and controller.$viewValue
           sumo.selectItem controller.$viewValue
+        else
+          sumo.setText()
       if watch
         watchDeref = scope.$watch watch, (n, o, scope) ->
           if angular.equals n, o
             return
           $timeout ->
             sumo.unload()
-            $(elem).SumoSelect scope.sumoselect
+            $(elem).SumoSelect opts
             sumo = $(elem)[0].sumo
             if sumo and controller and controller.$viewValue
               sumo.selectItem controller.$viewValue
