@@ -24,6 +24,10 @@ angular.module 'ng-sumoselect', []
         if sumo
           if controller and controller.$viewValue
             sumo.selectItem controller.$viewValue
+            sumo.callChange()
+            sumo.setPstate()
+            sumo.setText()
+            sumo.selAllState()
           else
             sumo.setText()
       if watch

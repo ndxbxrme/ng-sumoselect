@@ -27,7 +27,11 @@
           render = function() {
             if (sumo) {
               if (controller && controller.$viewValue) {
-                return sumo.selectItem(controller.$viewValue);
+                sumo.selectItem(controller.$viewValue);
+                sumo.callChange();
+                sumo.setPstate();
+                sumo.setText();
+                return sumo.selAllState();
               } else {
                 return sumo.setText();
               }
