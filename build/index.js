@@ -25,10 +25,12 @@
           var opts, render;
           opts = angular.extend({}, options, scope.$eval(attrs.sumoselect));
           render = function() {
-            if (sumo && controller && controller.$viewValue) {
-              return sumo.selectItem(controller.$viewValue);
-            } else {
-              return sumo.setText();
+            if (sumo) {
+              if (controller && controller.$viewValue) {
+                return sumo.selectItem(controller.$viewValue);
+              } else {
+                return sumo.setText();
+              }
             }
           };
           if (watch) {
@@ -68,7 +70,7 @@
           return $timeout(function() {
             $(elem).SumoSelect(opts);
             return sumo = $(elem)[0].sumo;
-          });
+          }, 10);
         };
       }
     };

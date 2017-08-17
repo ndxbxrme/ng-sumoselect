@@ -21,10 +21,11 @@ angular.module 'ng-sumoselect', []
     (scope, elem, attrs, controller) ->
       opts = angular.extend {}, options, scope.$eval(attrs.sumoselect)
       render = ->
-        if sumo and controller and controller.$viewValue
-          sumo.selectItem controller.$viewValue
-        else
-          sumo.setText()
+        if sumo
+          if controller and controller.$viewValue
+            sumo.selectItem controller.$viewValue
+          else
+            sumo.setText()
       if watch
         watchDeref = scope.$watch watch, (n, o, scope) ->
           if angular.equals n, o
@@ -58,3 +59,4 @@ angular.module 'ng-sumoselect', []
       $timeout ->
         $(elem).SumoSelect opts
         sumo = $(elem)[0].sumo
+      , 10
