@@ -69,8 +69,11 @@
           });
           return $timeout(function() {
             $(elem).SumoSelect(opts);
-            return sumo = $(elem)[0].sumo;
-          }, 10);
+            sumo = $(elem)[0].sumo;
+            if (sumo && controller && controller.$viewValue) {
+              return sumo.selectItem(controller.$viewValue);
+            }
+          });
         };
       }
     };

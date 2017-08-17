@@ -59,4 +59,5 @@ angular.module 'ng-sumoselect', []
       $timeout ->
         $(elem).SumoSelect opts
         sumo = $(elem)[0].sumo
-      , 10
+        if sumo and controller and controller.$viewValue
+          sumo.selectItem controller.$viewValue
