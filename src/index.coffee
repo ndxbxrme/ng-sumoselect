@@ -9,25 +9,29 @@ angular.module 'ng-sumoselect', []
   restrict: 'A'
   require: 'ngModel'
   priority: 1
-  compile: (tElem, tAttrs) ->
+  compile: (tElem, tAttrs) -> 
     repeatAttr = null
     watch = null
     watchDeref = null
-    repeatOption = tElem.find 'option[ng-repeat], option[data-ng-repeat]'
+    repeatOption = tElem.find 'option'
+    for option in repeatOption
+      opt = angular.element(option)
+      if repeatAttr = opt.attr('ng-repeat') or opt.attr('data-ng-repeat')
+        break
     sumo = null
     if repeatOption.length
-      repeatAttr = repeatOption.attr('ng-repeat') or repeatOption.attr('data-ng-repeat')
       watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop()
     (scope, elem, attrs, controller) ->
       opts = angular.extend {}, options, scope.$eval(attrs.sumoselect)
       render = ->
-        if sumo
+        if sumo 
           if controller and controller.$viewValue
-            sumo.selectItem controller.$viewValue
-            sumo.callChange()
-            sumo.setPstate()
-            sumo.setText()
-            sumo.selAllState()
+            $timeout ->
+              sumo.selectItem controller.$viewValue
+              sumo.callChange()
+              sumo.setPstate()
+              sumo.setText()
+              sumo.selAllState()
           else
             sumo.setText()
       if watch

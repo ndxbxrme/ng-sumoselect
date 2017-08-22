@@ -11,14 +11,20 @@
       require: 'ngModel',
       priority: 1,
       compile: function(tElem, tAttrs) {
-        var repeatAttr, repeatOption, sumo, watch, watchDeref;
+        var i, len, opt, option, repeatAttr, repeatOption, sumo, watch, watchDeref;
         repeatAttr = null;
         watch = null;
         watchDeref = null;
-        repeatOption = tElem.find('option[ng-repeat], option[data-ng-repeat]');
+        repeatOption = tElem.find('option');
+        for (i = 0, len = repeatOption.length; i < len; i++) {
+          option = repeatOption[i];
+          opt = angular.element(option);
+          if (repeatAttr = opt.attr('ng-repeat') || opt.attr('data-ng-repeat')) {
+            break;
+          }
+        }
         sumo = null;
         if (repeatOption.length) {
-          repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
           watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
         }
         return function(scope, elem, attrs, controller) {
@@ -27,11 +33,13 @@
           render = function() {
             if (sumo) {
               if (controller && controller.$viewValue) {
-                sumo.selectItem(controller.$viewValue);
-                sumo.callChange();
-                sumo.setPstate();
-                sumo.setText();
-                return sumo.selAllState();
+                return $timeout(function() {
+                  sumo.selectItem(controller.$viewValue);
+                  sumo.callChange();
+                  sumo.setPstate();
+                  sumo.setText();
+                  return sumo.selAllState();
+                });
               } else {
                 return sumo.setText();
               }
