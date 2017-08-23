@@ -11,11 +11,12 @@
       require: 'ngModel',
       priority: 1,
       compile: function(tElem, tAttrs) {
-        var i, len, opt, option, repeatAttr, repeatOption, sumo, watch, watchDeref;
+        var i, len, loaded, opt, option, repeatAttr, repeatOption, sumo, watch, watchDeref;
         repeatAttr = null;
         watch = null;
         watchDeref = null;
         repeatOption = tElem.find('option');
+        loaded = false;
         for (i = 0, len = repeatOption.length; i < len; i++) {
           option = repeatOption[i];
           opt = angular.element(option);
@@ -32,14 +33,12 @@
           opts = angular.extend({}, options, scope.$eval(attrs.sumoselect));
           render = function() {
             if (sumo) {
-              if (controller && controller.$viewValue) {
-                return $timeout(function() {
-                  sumo.selectItem(controller.$viewValue);
-                  sumo.callChange();
-                  sumo.setPstate();
-                  sumo.setText();
-                  return sumo.selAllState();
-                });
+              if (controller && controller.$viewValue && loaded) {
+                sumo.selectItem(controller.$viewValue);
+                sumo.callChange();
+                sumo.setPstate();
+                sumo.setText();
+                return sumo.selAllState();
               } else {
                 return sumo.setText();
               }
@@ -47,19 +46,16 @@
           };
           if (watch) {
             watchDeref = scope.$watch(watch, function(n, o, scope) {
-              if (angular.equals(n, o)) {
+              if (!n || angular.equals(n, o)) {
                 return;
               }
               return $timeout(function() {
+                loaded = true;
                 sumo.unload();
                 $(elem).SumoSelect(opts);
-                sumo = $(elem)[0].sumo;
-                if (sumo && controller && controller.$viewValue) {
-                  sumo.selectItem(controller.$viewValue);
-                }
-                if (n && !o && controller.$setPristine) {
-                  return controller.$setPristine(true);
-                }
+                return $timeout(function() {
+                  return render();
+                });
               });
             }, true);
           }
@@ -79,13 +75,8 @@
             sumo.unload();
             return typeof watchDeref === "function" ? watchDeref() : void 0;
           });
-          return $timeout(function() {
-            $(elem).SumoSelect(opts);
-            sumo = $(elem)[0].sumo;
-            if (sumo && controller && controller.$viewValue) {
-              return sumo.selectItem(controller.$viewValue);
-            }
-          });
+          $(elem).SumoSelect(opts);
+          return sumo = $(elem)[0].sumo;
         };
       }
     };

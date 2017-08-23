@@ -14,6 +14,7 @@ angular.module 'ng-sumoselect', []
     watch = null
     watchDeref = null
     repeatOption = tElem.find 'option'
+    loaded = false
     for option in repeatOption
       opt = angular.element(option)
       if repeatAttr = opt.attr('ng-repeat') or opt.attr('data-ng-repeat')
@@ -25,27 +26,24 @@ angular.module 'ng-sumoselect', []
       opts = angular.extend {}, options, scope.$eval(attrs.sumoselect)
       render = ->
         if sumo 
-          if controller and controller.$viewValue
-            $timeout ->
-              sumo.selectItem controller.$viewValue
-              sumo.callChange()
-              sumo.setPstate()
-              sumo.setText()
-              sumo.selAllState()
+          if controller and controller.$viewValue and loaded
+            sumo.selectItem controller.$viewValue
+            sumo.callChange()
+            sumo.setPstate()
+            sumo.setText()
+            sumo.selAllState()
           else
             sumo.setText()
       if watch
         watchDeref = scope.$watch watch, (n, o, scope) ->
-          if angular.equals n, o
+          if not n or angular.equals n, o
             return
           $timeout ->
+            loaded = true
             sumo.unload()
             $(elem).SumoSelect opts
-            sumo = $(elem)[0].sumo
-            if sumo and controller and controller.$viewValue
-              sumo.selectItem controller.$viewValue
-            if n and not o and controller.$setPristine
-              controller.$setPristine true
+            $timeout ->
+              render()
         , true
       controller.$parsers.push (value) ->
         div = elem.prev()
@@ -64,8 +62,5 @@ angular.module 'ng-sumoselect', []
       scope.$on '$destroy', ->
         sumo.unload()
         watchDeref?()
-      $timeout ->
-        $(elem).SumoSelect opts
-        sumo = $(elem)[0].sumo
-        if sumo and controller and controller.$viewValue
-          sumo.selectItem controller.$viewValue
+      $(elem).SumoSelect opts
+      sumo = $(elem)[0].sumo
