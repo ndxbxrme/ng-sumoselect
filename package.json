@@ -1,6 +1,6 @@
 {
   "name": "ng-sumoselect",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "An angular wrapper for SumoSelect",
   "main": "build/index.js",
   "scripts": {

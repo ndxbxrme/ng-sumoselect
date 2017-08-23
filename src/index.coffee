@@ -62,5 +62,6 @@ angular.module 'ng-sumoselect', []
       scope.$on '$destroy', ->
         sumo.unload()
         watchDeref?()
-      $(elem).SumoSelect opts
-      sumo = $(elem)[0].sumo
+      $timeout ->
+        $(elem).SumoSelect opts
+        sumo = $(elem)[0].sumo

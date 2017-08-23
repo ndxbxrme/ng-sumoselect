@@ -75,8 +75,10 @@
             sumo.unload();
             return typeof watchDeref === "function" ? watchDeref() : void 0;
           });
-          $(elem).SumoSelect(opts);
-          return sumo = $(elem)[0].sumo;
+          return $timeout(function() {
+            $(elem).SumoSelect(opts);
+            return sumo = $(elem)[0].sumo;
+          });
         };
       }
     };
