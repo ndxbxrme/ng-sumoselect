@@ -42,6 +42,7 @@ angular.module 'ng-sumoselect', []
             loaded = true
             sumo.unload()
             $(elem).SumoSelect opts
+            sumo = $(elem)[0].sumo
             $timeout ->
               render()
         , true

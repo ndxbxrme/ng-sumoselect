@@ -53,6 +53,7 @@
                 loaded = true;
                 sumo.unload();
                 $(elem).SumoSelect(opts);
+                sumo = $(elem)[0].sumo;
                 return $timeout(function() {
                   return render();
                 });
