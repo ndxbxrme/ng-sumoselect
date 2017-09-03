@@ -73,7 +73,9 @@
             return value;
           });
           scope.$on('$destroy', function() {
-            sumo.unload();
+            if (sumo != null) {
+              sumo.unload();
+            }
             return typeof watchDeref === "function" ? watchDeref() : void 0;
           });
           return $timeout(function() {
