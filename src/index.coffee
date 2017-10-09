@@ -15,6 +15,7 @@ angular.module 'ng-sumoselect', []
     watchDeref = null
     repeatOption = tElem.find 'option'
     loaded = false
+    viewValue = null
     for option in repeatOption
       opt = angular.element(option)
       if repeatAttr = opt.attr('ng-repeat') or opt.attr('data-ng-repeat')
@@ -25,14 +26,18 @@ angular.module 'ng-sumoselect', []
     (scope, elem, attrs, controller) ->
       opts = angular.extend {}, options, scope.$eval(attrs.sumoselect)
       render = ->
-        if sumo 
+        if sumo
+          if not controller.$viewValue and viewValue
+            controller.$viewValue = viewValue
           if controller and controller.$viewValue and loaded
+            viewValue = controller.$viewValue
             sumo.selectItem controller.$viewValue
             sumo.callChange()
             sumo.setPstate()
             sumo.setText()
             sumo.selAllState()
           else
+            viewValue = null
             sumo.setText()
       if watch
         watchDeref = scope.$watch watch, (n, o, scope) ->
@@ -40,11 +45,12 @@ angular.module 'ng-sumoselect', []
             return
           $timeout ->
             loaded = true
-            sumo.unload()
-            $(elem).SumoSelect opts
-            sumo = $(elem)[0].sumo
-            $timeout ->
-              render()
+            if sumo and not sumo.is_opened
+              sumo.unload()
+              $(elem).SumoSelect opts
+              sumo = $(elem)[0].sumo
+              $timeout ->
+                render()
         , true
       controller.$parsers.push (value) ->
         div = elem.prev()

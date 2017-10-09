@@ -11,12 +11,13 @@
       require: 'ngModel',
       priority: 1,
       compile: function(tElem, tAttrs) {
-        var i, len, loaded, opt, option, repeatAttr, repeatOption, sumo, watch, watchDeref;
+        var i, len, loaded, opt, option, repeatAttr, repeatOption, sumo, viewValue, watch, watchDeref;
         repeatAttr = null;
         watch = null;
         watchDeref = null;
         repeatOption = tElem.find('option');
         loaded = false;
+        viewValue = null;
         for (i = 0, len = repeatOption.length; i < len; i++) {
           option = repeatOption[i];
           opt = angular.element(option);
@@ -33,13 +34,18 @@
           opts = angular.extend({}, options, scope.$eval(attrs.sumoselect));
           render = function() {
             if (sumo) {
+              if (!controller.$viewValue && viewValue) {
+                controller.$viewValue = viewValue;
+              }
               if (controller && controller.$viewValue && loaded) {
+                viewValue = controller.$viewValue;
                 sumo.selectItem(controller.$viewValue);
                 sumo.callChange();
                 sumo.setPstate();
                 sumo.setText();
                 return sumo.selAllState();
               } else {
+                viewValue = null;
                 return sumo.setText();
               }
             }
@@ -51,12 +57,14 @@
               }
               return $timeout(function() {
                 loaded = true;
-                sumo.unload();
-                $(elem).SumoSelect(opts);
-                sumo = $(elem)[0].sumo;
-                return $timeout(function() {
-                  return render();
-                });
+                if (sumo && !sumo.is_opened) {
+                  sumo.unload();
+                  $(elem).SumoSelect(opts);
+                  sumo = $(elem)[0].sumo;
+                  return $timeout(function() {
+                    return render();
+                  });
+                }
               });
             }, true);
           }
