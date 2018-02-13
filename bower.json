@@ -21,5 +21,7 @@
     "multiselect",
     "dropdown"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "sumoselect": "^3.0.2"
+  }
 }
