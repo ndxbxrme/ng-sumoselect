@@ -99,5 +99,3 @@
      /*styling for optgroups*/
     .SumoSelect > .optWrapper > .options li.optGroup { padding-left: 5px; text-decoration: underline; }
 
-
-.SumoSelect li.opt{display:none;}.SumoSelect li.opt.ng-binding{display:block}.SumoSelect li.opt.hidden{display:none}.SumoSelect li.opt small{display:block}
