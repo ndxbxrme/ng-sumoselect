@@ -17,21 +17,29 @@ module.exports = (grunt) ->
           expand: true
           cwd: 'src'
           src: ['**/*.coffee']
-          dest: 'build'
+          dest: 'temp'
           ext: '.js'
         }]
     stylus:
       default:
         files:
-          "build\/app.css": "src\/**\/*.stylus"
+          "temp\/app.css": "src\/**\/*.stylus"
     clean:
       build: 'build'
+    concat:
+      js:
+        src: ['src/jquery.sumoselect.js', 'temp/index.js']
+        dest: 'build/index.js'
+      css:
+        src: ['src/sumoselect.css', 'temp/app.css']
+        dest: 'build/app.css'
     nodeunit:
       tests: ['build/test/**/*.js']
   grunt.registerTask 'build', [
     'clean:build'
     'coffee'
     'stylus'
+    'concat'
   ]
   grunt.registerTask 'default', [
     'build'

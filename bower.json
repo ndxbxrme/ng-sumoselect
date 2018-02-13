@@ -1,7 +1,10 @@
 {
   "name": "ng-sumoselect",
   "description": "An angular wrapper for SumoSelect",
-  "main": ["build/index.js", "build/app.css"],
+  "main": [
+    "build/index.js",
+    "build/app.css"
+  ],
   "authors": [
     "ndxbxrme"
   ],
@@ -18,7 +21,5 @@
     "multiselect",
     "dropdown"
   ],
-  "dependencies": {
-    "sumoselect": "^3.0.2"
-  }
+  "dependencies": {}
 }
