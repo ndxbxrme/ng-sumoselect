@@ -141,7 +141,7 @@
                                                                                     // todo: remove this data val 
                     var pre = opt.attr('pre') || '';
                     var post = opt.attr('post') || '';
-                    li = $('<li class="opt"><label>' + pre + opt.text() + post + '</label></li>');//.data('val',opt.val());
+                    li = $('<li class="opt"><label>' + pre + opt.text().replace('<', '&lt;').replace('>', '&gt;') + post + '</label></li>');//.data('val',opt.val());
                     li.data('opt', opt);    // store a direct reference to option.
                     opt.data('li', li);    // store a direct reference to list item.
                     if (O.is_multi) li.prepend('<span><i></i></span>');
